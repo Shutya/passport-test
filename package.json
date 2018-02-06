@@ -1,0 +1,53 @@
+{
+  "name": "webpack",
+  "version": "0.0.1",
+  "description": "A sample setup for Webpack with ES6 and Sass",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start:client": "cross-env NODE_ENV=development ./node_modules/.bin/webpack-dev-server --config webpack.config.js --port 3001 --hot --inline",
+    "start:server": "cross-env NODE_ENV=development nodemon server --exec babel-node",
+    "start": "npm-run-all -l -p start:client start:server"
+  },
+  "author": "Denis Shutikov",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "css-loader": "^0.28.7",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "7.1.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2017-node7": "^0.5.2",
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "cross-env": "^5.1.3",
+    "crypto": "^1.0.1",
+    "express": "^4.16.2",
+    "express-form-data": "^2.0.1",
+    "express-session": "^1.15.6",
+    "extract-text-webpack-plugin": "^3.0.1",
+    "jsonwebtoken": "^8.1.1",
+    "mongoose": "^4.13.10",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.14.11",
+    "npm-run-all": "^4.1.2",
+    "passport": "^0.4.0",
+    "passport-github": "^1.1.0",
+    "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0"
+  }
+}
