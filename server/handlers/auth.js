@@ -1,34 +1,56 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const { hashPassword } = require('../lib/bcrypt');
 
 const config = require('../config');
+const {signToken} = require('../lib/jwt');
 
+exports.register = async (req, res, next) => {
+    try {
+        const data = req.body;
+        const userExists = await User.findOne({ username: data.username });
+        if (userExists) {
+            res.status(409).send('User already exists');
+        } else {
+            const user = new User({ username: data.username, password: await hashPassword(data.password)});
+            const savedUser = await user.save();
+            const token = signToken(savedUser.toJSON());
+            res.cookie('auth', token);
+            res.send({redirect: config.successRedirect});
+        }
+    } catch (err) {
+        res.status(404).send(err);
+    }
+};
 
 exports.logout = (req, res) => {
     req.logout();
-    res.status(201).send({
-        message: 'Redirect to base page'
-    });
-}
-
-exports.getUser = (req, res, next) => {
-    User.findById(req.user._id, (err, user) => {
-        if (!user) {
-            return res.status(401).json({ error: 'Not found' });
-        }
-        const data = user.github.username ? user.github : {email: user.local.email};
-        return res.status(200).json(data);
-    })
+    res.clearCookie('auth');
+    res.send({ redirect: config.failureRedirect });
 };
 
-exports.github = (req, res, next) => {
-    return res.redirect(config.successRedirect);
-}
+exports.getUser = (req, res, next) => {
+    User.findById(req.user._id)
+        .then(user => res.status(200).json(user))
+        .catch(() => res.status(404).json('Not found'))
+};
 
-exports.localRegister = (req, res, next) => {
-    return res.status(201).json({ status: 'OK' });
-}
+exports.localAuthHandler = (req, res) => {
+    if (req.user) {
+        const token = signToken(req.user);
+        res.cookie('auth', token);
+        res.send({redirect: config.successRedirect})
+    } else {
+        res.send({ redirect: config.failureRedirect })
+    }
+};
 
-exports.localLogin = (req, res, next) => {
-    return res.status(201).json({ status: 'OK' });
-}
+exports.githubAuthHandler = (req, res) => {
+    if (req.user) {
+        const token = signToken(req.user);
+        res.cookie('auth', token);
+        res.redirect(config.successRedirect)
+    } else {
+        res.redirect(config.failureRedirect)
+    }
+};

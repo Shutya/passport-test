@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const config = require('./config');
 const middlewares = require('./middleware');
+const checkAuthentication = require('./lib/checkAuthentication');
 
 const app = express();
 
@@ -14,7 +15,7 @@ mongoose.connect(config.database, {
 
 middlewares(app);
 
-routes(app);
+app.use('/api', checkAuthentication, routes);
 
 const server = app.listen(config.port);
 

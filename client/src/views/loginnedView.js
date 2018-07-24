@@ -3,20 +3,12 @@ import user from '../data/user';
 
 export default function loginnedView (app) {
   const data = user.getUserData();
-  let changedField;
-  if (data.email) {
-    changedField = `your email is ${data.email}`;
-  } else if (data.username) {
-    changedField = data.username;
-  } else {
-    changedField = 'you are not logined';
-  }
 
-  const markup = 
+  const markup =
   `<main class="overlay">
     <div class="text-wrapper">
       <p>Congratulations, you are loginned!!!</p>
-      <p>Hello, ${changedField}</p>
+      <p>Hello, ${data.username ? `your username is ${data.username}` : 'you are not logined' }</p>
       <p><a id='logout' href='#'>Logout</a></p>
     </div>
   </main>`;
@@ -26,7 +18,7 @@ export default function loginnedView (app) {
 
   const logout = wrapper.querySelector('#logout');
   logout.addEventListener('click', onClickLogout);
-    
+
   app.innerHTML = '';
   app.appendChild(wrapper);
 }

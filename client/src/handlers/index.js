@@ -1,27 +1,24 @@
 import service from '../service';
-import { setCookie, getCookie } from '../utils/cookie';
 import user from '../data/user';
 
 export const onClickLoginButton = (e) => {
   e.preventDefault();
   const form = document.forms.form;
   const password = form.password.value;
-  const email = form.email.value;
-  service.post('login', {
-    email,
-    password
-  }).then(data => { location.hash = 'login-success' });
+  const username = form.username.value;
+  service.post('login', {username, password})
+    .then(data => { window.location = data.redirect })
+    .catch(console.log);
 }
 
 export const onClickRegisterButton = (e) => {
   e.preventDefault();
   const form = document.forms.form;
   const password = form.password.value;
-  const email = form.email.value;
-  service.post('register', {
-    email,
-    password
-  }).then(data => { location.hash = 'login-success' });
+  const username = form.username.value;
+  service.post('register', {username, password})
+    .then(data => { window.location = data.redirect })
+    .catch(console.log);
 }
 
 export const onClickGithubButton = (e) => {
@@ -32,7 +29,6 @@ export const onClickGithubButton = (e) => {
 export const onClickLogout = (e) => {
   e.preventDefault();
   service.get('/logout')
-    .then(data => {
-      location.href = '';
-    });
+    .then(data => { window.location = data.redirect })
+    .catch(console.log);
 }

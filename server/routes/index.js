@@ -3,19 +3,16 @@ const passport = require('passport');
 
 const auth = require('../handlers/auth');
 const config = require('../config');
-const checkAuthentication = require('../lib/checkAuthentication');
 
-const apiRouter = express.Router();
+const router = express.Router();
 
-module.exports = (app) => {
-    apiRouter.get('/me', auth.getUser);
-    apiRouter.get('/logout', auth.logout);
-    apiRouter.post('/register', passport.authenticate('local-register'), auth.localRegister);
-    apiRouter.post('/login', passport.authenticate('local-login'), auth.localLogin);
-    apiRouter.get('/auth/github', passport.authenticate('github'));
-    apiRouter.get('/auth/github/callback', passport.authenticate('github', {
-        failureRedirect: config.failureRedirect
-    }), auth.github);
+router.get('/me', auth.getUser);
+router.get('/logout', auth.logout);
+router.post('/register', auth.register);
+router.post('/login', passport.authenticate('local'), auth.localAuthHandler);
+router.get('/auth/github', passport.authenticate('github'));
+router.get('/auth/github/callback', passport.authenticate('github', {
+    failureRedirect: config.failureRedirect
+}), auth.githubAuthHandler);
 
-    app.use('/api', checkAuthentication, apiRouter);
-};
+module.exports = router;
