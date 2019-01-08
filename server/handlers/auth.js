@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { hashPassword } = require('../lib/bcrypt');
 
@@ -16,7 +15,7 @@ exports.register = async (req, res, next) => {
             const savedUser = await user.save();
             const token = signToken(savedUser.toJSON());
             res.cookie('auth', token);
-            res.send({redirect: config.successRedirect});
+            res.send('Ok');
         }
     } catch (err) {
         res.status(404).send(err);
@@ -26,7 +25,7 @@ exports.register = async (req, res, next) => {
 exports.logout = (req, res) => {
     req.logout();
     res.clearCookie('auth');
-    res.send({ redirect: config.failureRedirect });
+    res.send('Ok');
 };
 
 exports.getUser = (req, res, next) => {
@@ -39,9 +38,9 @@ exports.localAuthHandler = (req, res) => {
     if (req.user) {
         const token = signToken(req.user);
         res.cookie('auth', token);
-        res.send({redirect: config.successRedirect})
+        res.send('Ok')
     } else {
-        res.send({ redirect: config.failureRedirect })
+        res.status(500).send('Send user please')
     }
 };
 

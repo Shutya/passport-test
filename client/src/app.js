@@ -1,7 +1,7 @@
-import onHashChange from './routing';
+import routing from './routing';
 
 const app = document.querySelector('#app');
 
-window.addEventListener('hashchange', () => { onHashChange(app); });
+window.addEventListener('hashchange', () => routing(app));
 
-onHashChange(app);
+routing(app);

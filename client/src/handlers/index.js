@@ -1,23 +1,12 @@
 import service from '../service';
-import user from '../data/user';
 
-export const onClickLoginButton = (e) => {
+export const onLocalAuth = action => e => {
   e.preventDefault();
   const form = document.forms.form;
   const password = form.password.value;
   const username = form.username.value;
-  service.post('login', {username, password})
-    .then(data => { window.location = data.redirect })
-    .catch(console.log);
-}
-
-export const onClickRegisterButton = (e) => {
-  e.preventDefault();
-  const form = document.forms.form;
-  const password = form.password.value;
-  const username = form.username.value;
-  service.post('register', {username, password})
-    .then(data => { window.location = data.redirect })
+  service.post(action, {username, password})
+    .then(() => window.location.assign('#login-success'))
     .catch(console.log);
 }
 
@@ -29,6 +18,6 @@ export const onClickGithubButton = (e) => {
 export const onClickLogout = (e) => {
   e.preventDefault();
   service.get('/logout')
-    .then(data => { window.location = data.redirect })
+    .then(() => window.location.assign(''))
     .catch(console.log);
 }

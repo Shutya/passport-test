@@ -1,4 +1,4 @@
-import { onClickLoginButton, onClickRegisterButton, onClickGithubButton } from '../handlers';
+import { onLocalAuth, onClickGithubButton } from '../handlers';
 
 export default function formView (app) {
   const markup =
@@ -37,8 +37,8 @@ export default function formView (app) {
   const loginButton = wrapper.querySelector('#login');
   const registerButton = wrapper.querySelector('#register');
   githubButton.addEventListener('click', onClickGithubButton);
-  loginButton.addEventListener('click', onClickLoginButton);
-  registerButton.addEventListener('click', onClickRegisterButton);
+  loginButton.addEventListener('click', onLocalAuth('login'));
+  registerButton.addEventListener('click', onLocalAuth('register'));
 
   app.innerHTML = '';
   app.appendChild(wrapper);

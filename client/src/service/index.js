@@ -71,10 +71,8 @@ const responseSuccessInterceptor = (response) => {
 };
 
 const responseFailureInterceptor = (error) => {
-  if (error.response && error.response.status === 401) {
-    location.pathname !== ''
-      ? window.location.href = `${location.origin}`
-      : null;
+  if (error.response && error.response.status === 401 && location.hash !== '') {
+    window.location = '';
   }
   return Promise.reject(error.response);
 };
